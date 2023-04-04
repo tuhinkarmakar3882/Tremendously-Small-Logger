@@ -12,6 +12,7 @@ export type ICustomLoggingHandlers = {
   error?: Function
   debug?: Function
   warn?: Function
+  trace?: Function
 };
 
 export interface ILoggerOptions {
@@ -19,12 +20,12 @@ export interface ILoggerOptions {
   enableStackTraceInErrorLogs?: boolean
   enableGlobalErrorTracing?: boolean
 
-  handlers?: ICustomLoggingHandlers,
+  handlers?: ICustomLoggingHandlers
   logLevelFlags?: ICustomLogLevelFlags
-  prefixFunc?: Function,
+  prefixFunc?: Function | string
 }
 
 export interface IRunWithAugmentationProps {
-  func: Function,
+  func: Function
   handler?: Function
 }

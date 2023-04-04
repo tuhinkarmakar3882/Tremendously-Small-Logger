@@ -1,7 +1,7 @@
 import {ICustomLoggingHandlers, ICustomLogLevelFlags, ILoggerOptions, IRunWithAugmentationProps} from "./types"
 
-export class TLogger {
-  private static _logger: TLogger
+export class TSLogger {
+  private static _logger: TSLogger
 
   private readonly _originalConsoleLogMethod: (...args) => void
   private readonly _originalConsoleInfoMethod: (...args) => void
@@ -24,7 +24,7 @@ export class TLogger {
     this._isMonkeyPatched = options.enableMonkeyPatch || false
     this._enableStackTraceInErrorLogs = options.enableStackTraceInErrorLogs || false
     this._enableGlobalErrorTracing = options.enableGlobalErrorTracing || false
-    this._logPrefix = options.prefixFunc ? options.prefixFunc : '[TLogger]'
+    this._logPrefix = options.prefixFunc ? options.prefixFunc : '[TSLogger]'
 
     this._originalConsoleLogMethod = console.log
     this._originalConsoleInfoMethod = console.info
@@ -42,9 +42,9 @@ export class TLogger {
     }
   }
 
-  static getInstance(options?: ILoggerOptions): TLogger {
+  static getInstance(options?: ILoggerOptions): TSLogger {
     if (!this._logger) {
-      this._logger = new TLogger({...options})
+      this._logger = new TSLogger({...options})
     }
 
     return this._logger
@@ -96,7 +96,7 @@ export class TLogger {
 
     this._runWithAugmentation({
       func: () => console.trace(...newArgs),
-      handler: this._handlers?.error
+      handler: this._handlers?.trace
     })
   }
 
@@ -275,5 +275,4 @@ export class TLogger {
   }
 }
 
-export default TLogger
-
+export default TSLogger
