@@ -51,9 +51,9 @@ interface ILoggerOptions {
   prefixFunc?: Function | string
 }
 ```
----
 
-### Common Usage Patterns
+
+## Common Usage Patterns
 There are two ways of using the package
 - [Quick] Monkeypatch the following at a global level with the TSLogger config
   - `console.log`
@@ -64,12 +64,12 @@ There are two ways of using the package
 - [Recommended] Use it **without** MonkeyPatching
 
 
-#### [Quick Migrate] With MonkeyPatching
+### [Quick Migrate] With MonkeyPatching
 
 If you're using monkeypatching, and want to disable it on the fly, use the folloing
 ```typescript
 logger.disableMonkeyPatch(...args)
 ```
 
-#### [Recommended] Without MonkeyPatching
+### [Recommended] Without MonkeyPatching
 ...
