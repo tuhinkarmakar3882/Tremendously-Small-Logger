@@ -56,11 +56,11 @@ interface ILoggerOptions {
 ### Common Usage Patterns
 There are two ways of using the package
 - [Quick] Monkeypatch the following at a global level with the TSLogger config
-  - console.log
-  - console.info
-  - console.error
-  - console.debug
-  - console.warn
+  - `console.log`
+  - `console.info`
+  - `console.error`
+  - `console.debug`
+  - `console.warn`
 - [Recommended] Use it **without** MonkeyPatching
 
 
