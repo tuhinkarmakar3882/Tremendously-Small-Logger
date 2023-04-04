@@ -155,7 +155,6 @@ There are two ways of using the package
 import TSLogger from `tremendously-small-logger`
 
 const logger = TSLogger.getInstance({ 
-  enableMonkeyPatch: true,  
   // put relevant configs depending on your usecase
 })
 
@@ -171,7 +170,7 @@ TSLogger.getInstance({
 })
 ```
 
-If you're using monkeypatching, and wish to disable it on the fly, use the folloing
+If you're using monkeypatching, and wish to disable it on the fly, use the following
 ```typescript
 logger.disableMonkeyPatch()
 ```
