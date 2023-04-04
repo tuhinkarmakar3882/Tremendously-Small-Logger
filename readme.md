@@ -93,8 +93,7 @@ If you're using monkeypatching, and wish to disable it on the fly, use the follo
 logger.disableMonkeyPatch()
 ```
 
-> With this approach, you can continue to use regular console.<log/info/error/debug/warn> methods
-> And your custom handler will be invoked at runtime, before calling the console methods.
+> With this approach, you can continue to use regular console.<log/info/error/debug/warn> methods & your custom handler will be invoked at runtime, before calling the console methods.
 
 Here's a sample:
 
@@ -182,4 +181,5 @@ const logger = TSLogger.getInstance({
 ---
 
 ### 2. [Recommended] Without MonkeyPatching
-...
+If you wish not to monkey patch & replace the regular console.<log/info/error/debug/warn> with logger.<log/info/error/debug/warn>, then you can set the `enableMonkeyPatch` flag to `false`.
+
