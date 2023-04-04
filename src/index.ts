@@ -186,8 +186,8 @@ class TSLogger {
     const boundedRunWithAugmentation = this._runWithAugmentation.bind(this)
     const boundedWarnHandler = this._handlers?.warn
 
-    console.warn = function () {
-      const args = boundedGetFinalArgs(Array.from(arguments), true)
+    console.warn = (...funcArgs) => {
+      const args = boundedGetFinalArgs(funcArgs, true)
 
       boundedRunWithAugmentation({
         func: () => originalConsoleWarnMethod.apply(console, args),
@@ -202,8 +202,8 @@ class TSLogger {
     const boundedRunWithAugmentation = this._runWithAugmentation.bind(this)
     const boundedDebugHandler = this._handlers?.debug
 
-    console.debug = function () {
-      const args = boundedGetFinalArgs(Array.from(arguments), true)
+    console.debug = (...funcArgs) => {
+      const args = boundedGetFinalArgs(funcArgs, true)
 
       boundedRunWithAugmentation({
         func: () => originalConsoleDebugMethod.apply(console, args),
@@ -218,8 +218,8 @@ class TSLogger {
     const boundedRunWithAugmentation = this._runWithAugmentation.bind(this)
     const boundedErrorHandler = this._handlers?.error
 
-    console.error = function () {
-      const args = boundedGetFinalArgs(Array.from(arguments), true)
+    console.error = (...funcArgs) => {
+      const args = boundedGetFinalArgs(funcArgs, true)
 
       boundedRunWithAugmentation({
         func: () => originalConsoleErrorMethod.apply(console, args),
@@ -234,8 +234,8 @@ class TSLogger {
     const boundedRunWithAugmentation = this._runWithAugmentation.bind(this)
     const boundedInfoHandler = this._handlers?.info
 
-    console.info = function () {
-      const args = boundedGetFinalArgs(Array.from(arguments), true)
+    console.info = (...funcArgs) => {
+      const args = boundedGetFinalArgs(funcArgs, true)
 
       boundedRunWithAugmentation({
         func: () => originalConsoleInfoMethod.apply(console, args),
@@ -250,8 +250,8 @@ class TSLogger {
     const boundedRunWithAugmentation = this._runWithAugmentation.bind(this)
     const boundedLogHandler = this._handlers?.log
 
-    console.log = function () {
-      const args = boundedGetFinalArgs(Array.from(arguments), true)
+    console.log = (...funcArgs) => {
+      const args = boundedGetFinalArgs(funcArgs, true)
 
       boundedRunWithAugmentation({
         func: () => originalConsoleLogMethod.apply(console, args),
