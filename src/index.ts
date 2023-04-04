@@ -1,6 +1,6 @@
 import {ICustomLoggingHandlers, ICustomLogLevelFlags, ILoggerOptions, IRunWithAugmentationProps} from "./types"
 
-export class TSLogger {
+class TSLogger {
   private static _logger: TSLogger
 
   private readonly _originalConsoleLogMethod: (...args) => void
@@ -132,6 +132,14 @@ export class TSLogger {
     console.warn = this._originalConsoleWarningMethod as () => void
 
     this._isMonkeyPatched = false
+  }
+
+  enableMonkeyPatch() {
+    if (this._isMonkeyPatched) return
+
+    this._performMonkeyPatching()
+
+    this._isMonkeyPatched = true
   }
 
   private _getFinalArgs(args: any[], overrideMode = false): any[] {
