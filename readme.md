@@ -55,21 +55,23 @@ interface ILoggerOptions {
 
 ## Common Usage Patterns
 There are two ways of using the package
-- [Quick] Monkeypatch the following at a global level with the TSLogger config
+1. [Quick] Monkeypatch the following at a global level with the TSLogger config
   - `console.log`
   - `console.info`
   - `console.error`
   - `console.debug`
   - `console.warn`
-- [Recommended] Use it **without** MonkeyPatching
+2. [Recommended] Use it **without** MonkeyPatching
 
 
-### [Quick Migrate] With MonkeyPatching
+### 1. [Quick Migrate] With MonkeyPatching
 
 If you're using monkeypatching, and want to disable it on the fly, use the folloing
 ```typescript
 logger.disableMonkeyPatch(...args)
 ```
 
-### [Recommended] Without MonkeyPatching
+---
+
+### 2. [Recommended] Without MonkeyPatching
 ...
