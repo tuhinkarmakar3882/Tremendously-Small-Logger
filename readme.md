@@ -52,54 +52,10 @@ interface ILoggerOptions {
 }
 ```
 
-
-## Common Usage Patterns
-There are two ways of using the package
-1. [Quick] Monkeypatch the following at a global level with the TSLogger config
-  - `console.log`
-  - `console.info`
-  - `console.error`
-  - `console.debug`
-  - `console.warn`
-2. [Recommended] Use it **without** MonkeyPatching
-
-
-### 1. [Quick Migrate] With MonkeyPatching
-
-- Go to your entry point in the code, e.g. `index.ts` or `App.ts` etc.
-- import the package & add the config
-
-```typescript
-import TSLogger from `tremendously-small-logger`
-
-const logger = TSLogger.getInstance({ 
-  // put relevant configs depending on your usecase
-})
-
-logger.enableMonkeyPatch()
-```
-
-Alternatively, you can also pass a flag in the first-time creation, i.e.
-```typescript
-import TSLogger from `tremendously-small-logger`
-
-TSLogger.getInstance({ 
-  enableMonkeyPatch: true
-})
-```
-
-If you're using monkeypatching, and wish to disable it on the fly, use the folloing
-```typescript
-logger.disableMonkeyPatch()
-```
-
-> With this approach, you can continue to use regular console.<log/info/error/debug/warn> methods & your custom handler will be invoked at runtime, before calling the console methods.
-
-Here's a sample:
+### Sample Code demo:
 
 ```typescript
 const logger = TSLogger.getInstance({
-  enableMonkeyPatch: true,
   enableGlobalErrorTracing: true,
   enableStackTraceInErrorLogs: true,
   
@@ -178,8 +134,69 @@ const logger = TSLogger.getInstance({
 });
 ```
 
+
+## Common Usage Patterns
+There are two ways of using the package
+1. [Quick] Monkeypatch the following at a global level with the TSLogger config
+  - `console.log`
+  - `console.info`
+  - `console.error`
+  - `console.debug`
+  - `console.warn`
+2. [Recommended] Use it **without** MonkeyPatching
+
+
+### 1. [Quick Migrate] With MonkeyPatching
+
+- Go to your entry point in the code, e.g. `index.ts` or `App.ts` etc.
+- import the package & add the config
+
+```typescript
+import TSLogger from `tremendously-small-logger`
+
+const logger = TSLogger.getInstance({ 
+  enableMonkeyPatch: true,  
+  // put relevant configs depending on your usecase
+})
+
+logger.enableMonkeyPatch()
+```
+
+Alternatively, you can also pass a flag in the first-time creation, i.e.
+```typescript
+import TSLogger from `tremendously-small-logger`
+
+TSLogger.getInstance({ 
+  enableMonkeyPatch: true
+})
+```
+
+If you're using monkeypatching, and wish to disable it on the fly, use the folloing
+```typescript
+logger.disableMonkeyPatch()
+```
+
+> With this approach, you can continue to use regular console.<log/info/error/debug/warn> methods & your custom handler will be invoked at runtime, before calling the console methods.
+
 ---
 
 ### 2. [Recommended] Without MonkeyPatching
-If you wish not to monkey patch & replace the regular console.<log/info/error/debug/warn> with logger.<log/info/error/debug/warn>, then you can set the `enableMonkeyPatch` flag to `false`.
+It is advisable not to monkey patch & replace the regular console.<log/info/error/debug/warn> with logger.<log/info/error/debug/warn>.
+
+To achieve this, please set the `enableMonkeyPatch` flag to `false`.
+
+i.e.,
+
+- Go to your entry point in the code, e.g. `index.ts` or `App.ts` etc.
+- import the package & add the config
+
+```typescript
+import TSLogger from `tremendously-small-logger`
+
+const logger = TSLogger.getInstance({ 
+  enableMonkeyPatch: false,  
+  // put relevant configs depending on your usecase
+})
+
+```
 
