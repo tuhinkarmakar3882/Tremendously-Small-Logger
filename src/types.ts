@@ -27,5 +27,5 @@ export interface ILoggerOptions {
 
 export interface IRunWithAugmentationProps {
   func: Function
-  handler?: Function
+  handler: Function
 }

@@ -88,13 +88,95 @@ TSLogger.getInstance({
 })
 ```
 
-> With this approach, you can continue to use regular console.<log/info/error/debug/warn> methods
-> And your custom handler will be invoked at runtime, before calling the console methods.
-
-
 If you're using monkeypatching, and wish to disable it on the fly, use the folloing
 ```typescript
 logger.disableMonkeyPatch()
+```
+
+> With this approach, you can continue to use regular console.<log/info/error/debug/warn> methods
+> And your custom handler will be invoked at runtime, before calling the console methods.
+
+Here's a sample:
+
+```typescript
+const logger = TSLogger.getInstance({
+  enableMonkeyPatch: true,
+  enableGlobalErrorTracing: true,
+  enableStackTraceInErrorLogs: true,
+  
+  prefixFunc: () => Date.now()
+
+  logLevelFlags: {
+    allowWarningLogging: true,
+    allowInfoLogging: true,
+    allowErrorLogging: true,
+    allowDebugLogging: true,
+    allowDefaultLogging: true,
+  },
+
+  handlers: {
+    log: ( /* ...args */) => {
+      /*
+      * someApiClient.post('/analytics-endpoint', {
+      *   data: {
+      *     args: args,
+      *     type: ConsoleActionTypes.LOG
+      *   }
+      * }
+      * */
+    },
+    error: ( /* ...args */) => {
+      /*
+      * someApiClient.post('/analytics-endpoint', {
+      *   data: {
+      *     args: args,
+      *     type: ConsoleActionTypes.ERROR
+      *   }
+      * }
+      * */
+    },
+    debug: ( /* ...args */) => {
+      /*
+      * someApiClient.post('/analytics-endpoint', {
+      *   data: {
+      *     args: args,
+      *     type: ConsoleActionTypes.DEBUG
+      *   }
+      * }
+      * */
+    },
+    warn: ( /* ...args */) => {
+      /*
+      * someApiClient.post('/analytics-endpoint', {
+      *   data: {
+      *     args: args,
+      *     type: ConsoleActionTypes.WARN
+      *   }
+      * }
+      * */
+    },
+    info: ( /* ...args */) => {
+      /*
+      * someApiClient.post('/analytics-endpoint', {
+      *   data: {
+      *     args: args,
+      *     type: ConsoleActionTypes.INFO
+      *   }
+      * }
+      * */
+    },
+    trace: ( /* ...args */) => {
+      /*
+      * someApiClient.post('/analytics-endpoint', {
+      *   data: {
+      *     args: args,
+      *     type: ConsoleActionTypes.TRACE
+      *   }
+      * }
+      * */
+    },
+  },
+});
 ```
 
 ---

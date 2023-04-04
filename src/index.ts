@@ -1,4 +1,4 @@
-import {ICustomLoggingHandlers, ICustomLogLevelFlags, ILoggerOptions, IRunWithAugmentationProps} from "./types"
+import { ICustomLoggingHandlers, ICustomLogLevelFlags, ILoggerOptions, IRunWithAugmentationProps } from "./types"
 
 class TSLogger {
   private static _logger: TSLogger
@@ -54,10 +54,15 @@ class TSLogger {
     if (!this._logLevelFlags?.allowDefaultLogging) return
 
     const newArgs = this._getFinalArgs(args);
+    const boundedHandler = this._handlers?.log
 
     this._runWithAugmentation({
       func: () => console.log(...newArgs),
-      handler: this._handlers?.log
+      handler: () => {
+        if (typeof boundedHandler !== 'function') return
+
+        boundedHandler(...args)
+      }
     })
   }
 
@@ -65,10 +70,15 @@ class TSLogger {
     if (!this._logLevelFlags?.allowInfoLogging) return
 
     const newArgs = this._getFinalArgs(args);
+    const boundedHandler = this._handlers?.info
 
     this._runWithAugmentation({
       func: () => console.info(...newArgs),
-      handler: this._handlers?.info
+      handler: () => {
+        if (typeof boundedHandler !== 'function') return
+
+        boundedHandler(...args)
+      }
     })
   }
 
@@ -76,7 +86,9 @@ class TSLogger {
     if (!this._logLevelFlags?.allowErrorLogging) return
 
     const newArgs = this._getFinalArgs(args);
-    const trace = this.trace.bind(this)
+    const boundedHandler = this._handlers?.error
+
+    const boundedTraceHandler = this.trace.bind(this)
     const _enableStackTraceInErrorLogs = this._enableStackTraceInErrorLogs
 
     this._runWithAugmentation({
@@ -84,19 +96,28 @@ class TSLogger {
         console.error(...newArgs)
 
         if (_enableStackTraceInErrorLogs) {
-          trace(...newArgs)
+          boundedTraceHandler(...newArgs)
         }
       },
-      handler: this._handlers?.error
+      handler: () => {
+        if (typeof boundedHandler !== 'function') return
+
+        boundedHandler(...args)
+      }
     })
   }
 
   trace(...args) {
     const newArgs = this._getFinalArgs(args);
+    const boundedHandler = this._handlers?.trace
 
     this._runWithAugmentation({
       func: () => console.trace(...newArgs),
-      handler: this._handlers?.trace
+      handler: () => {
+        if (typeof boundedHandler !== 'function') return
+
+        boundedHandler(...args)
+      }
     })
   }
 
@@ -104,10 +125,15 @@ class TSLogger {
     if (!this._logLevelFlags?.allowDebugLogging) return
 
     const newArgs = this._getFinalArgs(args);
+    const boundedHandler = this._handlers?.debug
 
     this._runWithAugmentation({
       func: () => console.debug(...newArgs),
-      handler: this._handlers?.debug
+      handler: () => {
+        if (typeof boundedHandler !== 'function') return
+
+        boundedHandler(...args)
+      }
     })
   }
 
@@ -115,10 +141,15 @@ class TSLogger {
     if (!this._logLevelFlags?.allowWarningLogging) return
 
     const newArgs = this._getFinalArgs(args);
+    const boundedHandler = this._handlers?.warn
 
     this._runWithAugmentation({
       func: () => console.warn(...newArgs),
-      handler: this._handlers?.warn
+      handler: () => {
+        if (typeof boundedHandler !== 'function') return
+
+        boundedHandler(...args)
+      }
     })
   }
 
@@ -153,8 +184,7 @@ class TSLogger {
   }
 
   private _runWithAugmentation({func, handler}: IRunWithAugmentationProps) {
-    if (handler) handler()
-
+    handler()
     func()
   }
 
@@ -184,14 +214,18 @@ class TSLogger {
     const originalConsoleWarnMethod = this._originalConsoleWarningMethod
     const boundedGetFinalArgs = this._getFinalArgs.bind(this)
     const boundedRunWithAugmentation = this._runWithAugmentation.bind(this)
-    const boundedWarnHandler = this._handlers?.warn
+    const boundedHandler = this._handlers?.warn
 
     console.warn = (...funcArgs) => {
       const args = boundedGetFinalArgs(funcArgs, true)
 
       boundedRunWithAugmentation({
         func: () => originalConsoleWarnMethod.apply(console, args),
-        handler: boundedWarnHandler
+        handler: () => {
+          if (typeof boundedHandler !== 'function') return
+
+          boundedHandler(...args)
+        }
       })
     }
   }
@@ -200,14 +234,18 @@ class TSLogger {
     const originalConsoleDebugMethod = this._originalConsoleDebugMethod
     const boundedGetFinalArgs = this._getFinalArgs.bind(this)
     const boundedRunWithAugmentation = this._runWithAugmentation.bind(this)
-    const boundedDebugHandler = this._handlers?.debug
+    const boundedHandler = this._handlers?.debug
 
     console.debug = (...funcArgs) => {
       const args = boundedGetFinalArgs(funcArgs, true)
 
       boundedRunWithAugmentation({
         func: () => originalConsoleDebugMethod.apply(console, args),
-        handler: boundedDebugHandler
+        handler: () => {
+          if (typeof boundedHandler !== 'function') return
+
+          boundedHandler(...args)
+        }
       })
     }
   }
@@ -216,14 +254,18 @@ class TSLogger {
     const originalConsoleErrorMethod = this._originalConsoleErrorMethod
     const boundedGetFinalArgs = this._getFinalArgs.bind(this)
     const boundedRunWithAugmentation = this._runWithAugmentation.bind(this)
-    const boundedErrorHandler = this._handlers?.error
+    const boundedHandler = this._handlers?.error
 
     console.error = (...funcArgs) => {
       const args = boundedGetFinalArgs(funcArgs, true)
 
       boundedRunWithAugmentation({
         func: () => originalConsoleErrorMethod.apply(console, args),
-        handler: boundedErrorHandler
+        handler: () => {
+          if (typeof boundedHandler !== 'function') return
+
+          boundedHandler(...args)
+        }
       })
     }
   }
@@ -232,14 +274,18 @@ class TSLogger {
     const originalConsoleInfoMethod = this._originalConsoleInfoMethod
     const boundedGetFinalArgs = this._getFinalArgs.bind(this)
     const boundedRunWithAugmentation = this._runWithAugmentation.bind(this)
-    const boundedInfoHandler = this._handlers?.info
+    const boundedHandler = this._handlers?.info
 
     console.info = (...funcArgs) => {
       const args = boundedGetFinalArgs(funcArgs, true)
 
       boundedRunWithAugmentation({
         func: () => originalConsoleInfoMethod.apply(console, args),
-        handler: boundedInfoHandler
+        handler: () => {
+          if (typeof boundedHandler !== 'function') return
+
+          boundedHandler(...args)
+        }
       })
     }
   }
@@ -248,14 +294,18 @@ class TSLogger {
     const originalConsoleLogMethod = this._originalConsoleLogMethod
     const boundedGetFinalArgs = this._getFinalArgs.bind(this)
     const boundedRunWithAugmentation = this._runWithAugmentation.bind(this)
-    const boundedLogHandler = this._handlers?.log
+    const boundedHandler = this._handlers?.log
 
     console.log = (...funcArgs) => {
       const args = boundedGetFinalArgs(funcArgs, true)
 
       boundedRunWithAugmentation({
         func: () => originalConsoleLogMethod.apply(console, args),
-        handler: boundedLogHandler
+        handler: () => {
+          if (typeof boundedHandler !== 'function') return
+
+          boundedHandler(...args)
+        }
       })
     }
   }
