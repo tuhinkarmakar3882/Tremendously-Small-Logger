@@ -54,19 +54,19 @@ Set up custom Hooks/Handlers that you wish to run, whenever the logger is invoke
 
 ```typescript
 const customHandlers: TSLoggingHandlerConfig = {
-  log: (...args) => handlerForConsoleLog(...args),
-  info: (...args) => handlerForConsoleInfo(...args),
-  warn: (...args) => handlerForConsoleWarn(...args),
-  error: (...args) => handlerForConsoleError(...args),
-  debug: (...args) => handlerForConsoleDebug(...args),
-  trace: (...args) => handlerForConsoleTrace(...args),
+  log: (args: any[]) => void,
+  info: (args: any[]) => void, 
+  warn: (args: any[]) => void,
+  error: (args: any[]) => void,
+  debug: (args: any[]) => void,
+  trace: (args: any[]) => void,
 }
 ```
 
 Optionally, Create a log Prefix Function:
 
 ```typescript
-const logPrefix = () => `[TSLogger: ${new Date()}]`
+const logPrefix = () => string
 ```
 
 And Get the Singleton instance!
