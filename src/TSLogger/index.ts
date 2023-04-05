@@ -1,8 +1,8 @@
-import { TSLogLevelFlags } from "../TSFlags/logLevelFlags";
-import { TSFeatureFlags } from "../TSFlags/featureFlags";
-import { TSOriginalConsoleClass } from "../TSOriginalConsoleClass";
-import { TSLoggingHandlerConfig } from "./types";
-import { TSLoggerUtility } from "../Utility";
+import {TSLogLevelFlags} from "../TSFlags/logLevelFlags";
+import {TSFeatureFlags} from "../TSFlags/featureFlags";
+import {TSOriginalConsoleClass} from "../TSOriginalConsoleClass";
+import {TSLoggingHandlerConfig} from "./types";
+import {TSLoggerUtility} from "../Utility";
 
 interface IRunWithAugmentationProps {
   func: Function
