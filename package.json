@@ -1,5 +1,5 @@
 {
-  "name": "extended-logger",
+  "name": "@tk/tremendously-small-logger",
   "version": "1.0.0",
   "description": "This is a small module to enrich console logging behaviour",
   "main": "src/TSLogger/index.ts",
