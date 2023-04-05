@@ -4,14 +4,17 @@
 
 ### Table of Contents:
 
+- [Overview](#overview)
 - [Getting Started](#getting-started)
 - [Available Methods](#available-methods)
 - [Common Usage Patterns](#common-usage-patterns)
 - [FAQ](#faq)
 - [For Development](#for-development)
 
-> This is a versatile libary to supercharge your console.logs and enables utmost customisibility by bringing in your own handler methods to hook into the logging events.
 
+# Overview
+
+This is a versatile libary to supercharge the global/window console object and enables utmost customisibility by means of custom handlers to hook into the logging events.
 
 # Getting Started:
 
@@ -50,7 +53,7 @@ const logFeatureFlags = new TSFeatureFlags({
 })
 ```
 
-Set up custom Hooks/Handlers that you wish to run, whenever the logger is invoked
+Set up custom Hooks/Handlers, whenever the logger is invoked
 
 ```typescript
 const customHandlers: TSLoggingHandlerConfig = {
@@ -74,7 +77,7 @@ And Get the Singleton instance!
 ```typescript
 const logger = TSLogger.getInstance({
   features: logFeatureFlags,
-  handlers: mockedHandlers,
+  handlers: customHandlers,
   logLevelFlags,
   logPrefix,
 })
@@ -107,19 +110,18 @@ There are two ways of using the package
 
 ## 1. [Quick] With MonkeyPatching
 
-- Go to your entry point in the code, e.g. `index.ts` or `App.ts` etc.
+- Go to the entry point in the code, e.g. `index.ts` or `App.ts` etc.
 - import the package & add the config
 
 ```typescript
 import {TSLogger} from "tremendously-small-logger"
 
 const logFeatureFlags = new TSFeatureFlags({
-  // put relevant configs depending on your usecase
+  // set relevant configs(if required)
 })
 
 const logLevelFlags = new TSLogLevelFlags({
-  allowDefaultLogging: true,
-  // put relevant configs depending on your usecase
+  // set relevant configs(if required)
 })
 
 const logger = TSLogger.getInstance({
@@ -130,19 +132,19 @@ const logger = TSLogger.getInstance({
 logger.enableMonkeyPatch()
 ```
 
-Alternatively, you can also pass a flag in the first-time creation, i.e.
+Alternatively, a flag can be passed in the first-time creation, i.e.
 
 ```typescript
 import {TSLogger} from "tremendously-small-logger"
 
 const logFeatureFlags = new TSFeatureFlags({
   enableMonkeyPatch: true,
-  // put relevant configs depending on your usecase
+  // set other relevant configs(if required)
 })
 
 const logLevelFlags = new TSLogLevelFlags({
   allowDefaultLogging: true,
-  // put relevant configs depending on your usecase
+  // set other relevant configs(if required)
 })
 
 TSLogger.getInstance({
@@ -151,14 +153,14 @@ TSLogger.getInstance({
 })
 ```
 
-If you're using monkeypatching, and wish to disable it on the fly, use the following
+MonkeyPatching can also be disabled on the fly:
 
 ```typescript
 logger.disableMonkeyPatch()
 ```
 
-> With this approach, you can continue to use regular console.<log/info/error/debug/warn> methods & your custom handler
-> will be invoked at runtime, before calling the console methods.
+> This approach allows to use the exising console.<log/info/error/debug/warn> methods(present in the global/window object) & custom handler 
+> will be invoked at runtime(if any), before calling the console methods.
 
 ---
 
@@ -167,11 +169,11 @@ logger.disableMonkeyPatch()
 It is advisable not to monkey patch & replace the regular console.<log/info/error/debug/warn> with logger.<
 log/info/error/debug/warn>.
 
-To achieve this, please set the `enableMonkeyPatch` flag to `false`.
+To achieve this, set the `enableMonkeyPatch` flag to `false`.
 
 i.e.,
 
-- Go to your entry point in the code, e.g. `index.ts` or `App.ts` etc.
+- Go to the entry point in the application, e.g. `index.ts` or `App.ts` etc.
 - import the package & add the config
 
 ```typescript
@@ -179,12 +181,12 @@ import {TSLogger} from "tremendously-small-logger"
 
 const logFeatureFlags = new TSFeatureFlags({
   enableMonkeyPatch: false,
-  // put relevant configs depending on your usecase
+  // set other relevant configs(if required)
 })
 
 const logLevelFlags = new TSLogLevelFlags({
   allowDefaultLogging: true,
-  // put relevant configs depending on your usecase
+  // set other relevant configs(if required)
 })
 
 const logger = TSLogger.getInstance({
@@ -197,7 +199,7 @@ const logger = TSLogger.getInstance({
 
 ### 1. What are the Custom Handlers?
 
-A Custom Handler is an additional hook to give you the utmost flexibility to run your own hook whenever a certain method
+A Custom Handler is an additional hook to give utmost flexibility to run custom hook whenever a certain method
 is invoked. One common usage case is to add an analytics event or perhaps trigger an alarm or perhaps log to Cloudwatch
 etc whenever certain logs are being printed.
 
@@ -268,12 +270,12 @@ const handlers: TSLoggingHandlerConfig = {
 
 ### 2. What is the order of execution for the hooks & the logs?
 
-Internally the handler you pass is invoked in the following manner:
+Internally the handler passed is invoked in the following manner:
 
 ```typescript
 function runWithAugmentation({func, handler}) {
-  handler() // Your custom hook
-  func() // Your base logger
+  handler() // custom hook
+  func() // base logger
 }
 ```
 
@@ -295,7 +297,7 @@ export {
 ### 4. What is TSLoggerUtility & ConsoleActionType?
 
 - `TSLoggerUtility` has two handy functions to detect `BrowserEnvironment` & `NodeEnvironment`
-- `ConsoleActionType` is an ENUM which contain basic log types for your convenience
+- `ConsoleActionType` is an ENUM which contain basic log types based on the requirements
 
 ---
 
@@ -307,4 +309,4 @@ export {
 
 # What's Next?
 
-Please feel free fork/raise Pull Request if you are willing to contribute here!
+Please feel free fork/raise Pull Request. Your contribute is highly appreciated!
