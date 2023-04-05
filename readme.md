@@ -2,19 +2,61 @@
 > Author: Tuhin (https://linkedin.com/in/tuhinkarmakar3882)
 
 ## Getting Started: CheatSheet
-To import the package,
+First Import the package,
 ```typescript
-import TSLogger from `tremendously-small-logger`
+import { TSFeatureFlags, TSLogger, TSLoggingHandlerConfig, TSLogLevelFlags } from "tremendously-small-logger"
 ```
 
-Get the Singleton instance
+Next Prepare the LogLevel Config
 ```typescript
-const logger = TSLogger.getInstance({ 
-    /* Put the Config here */
+const logLevelFlags = new TSLogLevelFlags({
+  allowWarningLogging: true,
+  allowErrorLogging: true,
+  allowDebugLogging: true,
+  allowDefaultLogging: true,
+  allowInfoLogging: true,
 })
 ```
 
-Use the available methods
+Next Prepare the Log's Feature Level Config
+```typescript
+const logFeatureFlags = new TSFeatureFlags({
+  enableMonkeyPatch: boolean,
+  enableGlobalErrorTracing: boolean,
+  enableStackTraceInErrorLogs: boolean,
+})
+```
+
+Set up custom Hooks/Handlers that you wish to run, whenever the logger is invoked
+```typescript
+const customHandlers: TSLoggingHandlerConfig = {
+  log: (...args) => handlerForConsoleLog(...args),
+  info: (...args) => handlerForConsoleInfo(...args),
+  warn: (...args) => handlerForConsoleWarn(...args),
+  error: (...args) => handlerForConsoleError(...args),
+  debug: (...args) => handlerForConsoleDebug(...args),
+  trace: (...args) => handlerForConsoleTrace(...args),
+}
+```
+
+Optionally, Create a log Prefix Function:
+```typescript
+const logPrefix = () => `[TSLogger: ${new Date()}]`
+```
+
+
+And Get the Singleton instance!
+```typescript
+const logger = TSLogger.getInstance({
+  features: logFeatureFlags,
+  handlers: mockedHandlers,
+  logLevelFlags,
+  logPrefix,
+})
+```
+
+
+## Available Methods:
 ```typescript
 logger.log(...args)
 logger.info(...args)
@@ -23,117 +65,6 @@ logger.error(...args)
 logger.debug(...args)
 logger.trace(...args)
 ```
-
-Here are the available config options
-```typescript
-interface ILoggerOptions {
-  enableMonkeyPatch?: boolean
-  enableStackTraceInErrorLogs?: boolean
-  enableGlobalErrorTracing?: boolean
-
-  handlers?: {
-    log?: Function
-    info?: Function
-    error?: Function
-    debug?: Function
-    warn?: Function
-    trace?: Function
-  }
-
-  logLevelFlags?: {
-    allowDefaultLogging?: boolean
-    allowInfoLogging?: boolean
-    allowErrorLogging?: boolean
-    allowDebugLogging?: boolean
-    allowWarningLogging?: boolean
-  }
-  
-  prefixFunc?: Function | string
-}
-```
-
-### Sample Code demo:
-
-```typescript
-const logger = TSLogger.getInstance({
-  enableGlobalErrorTracing: true,
-  enableStackTraceInErrorLogs: true,
-  
-  prefixFunc: () => Date.now()
-
-  logLevelFlags: {
-    allowWarningLogging: true,
-    allowInfoLogging: true,
-    allowErrorLogging: true,
-    allowDebugLogging: true,
-    allowDefaultLogging: true,
-  },
-
-  handlers: {
-    log: ( /* ...args */) => {
-      /*
-      * someApiClient.post('/analytics-endpoint', {
-      *   data: {
-      *     args: args,
-      *     type: ConsoleActionTypes.LOG
-      *   }
-      * }
-      * */
-    },
-    error: ( /* ...args */) => {
-      /*
-      * someApiClient.post('/analytics-endpoint', {
-      *   data: {
-      *     args: args,
-      *     type: ConsoleActionTypes.ERROR
-      *   }
-      * }
-      * */
-    },
-    debug: ( /* ...args */) => {
-      /*
-      * someApiClient.post('/analytics-endpoint', {
-      *   data: {
-      *     args: args,
-      *     type: ConsoleActionTypes.DEBUG
-      *   }
-      * }
-      * */
-    },
-    warn: ( /* ...args */) => {
-      /*
-      * someApiClient.post('/analytics-endpoint', {
-      *   data: {
-      *     args: args,
-      *     type: ConsoleActionTypes.WARN
-      *   }
-      * }
-      * */
-    },
-    info: ( /* ...args */) => {
-      /*
-      * someApiClient.post('/analytics-endpoint', {
-      *   data: {
-      *     args: args,
-      *     type: ConsoleActionTypes.INFO
-      *   }
-      * }
-      * */
-    },
-    trace: ( /* ...args */) => {
-      /*
-      * someApiClient.post('/analytics-endpoint', {
-      *   data: {
-      *     args: args,
-      *     type: ConsoleActionTypes.TRACE
-      *   }
-      * }
-      * */
-    },
-  },
-});
-```
-
 
 ## Common Usage Patterns
 There are two ways of using the package
@@ -152,10 +83,20 @@ There are two ways of using the package
 - import the package & add the config
 
 ```typescript
-import TSLogger from `tremendously-small-logger`
+import { TSLogger } from `tremendously-small-logger`
+
+const logFeatureFlags = new TSFeatureFlags({
+  // put relevant configs depending on your usecase
+})
+
+const logLevelFlags = new TSLogLevelFlags({
+  allowDefaultLogging: true,
+  // put relevant configs depending on your usecase
+})
 
 const logger = TSLogger.getInstance({ 
-  // put relevant configs depending on your usecase
+  features: logFeatureFlags,
+  logLevelFlags,
 })
 
 logger.enableMonkeyPatch()
@@ -163,10 +104,21 @@ logger.enableMonkeyPatch()
 
 Alternatively, you can also pass a flag in the first-time creation, i.e.
 ```typescript
-import TSLogger from `tremendously-small-logger`
+import { TSLogger } from `tremendously-small-logger`
+
+const logFeatureFlags = new TSFeatureFlags({
+  enableMonkeyPatch: true,
+  // put relevant configs depending on your usecase
+})
+
+const logLevelFlags = new TSLogLevelFlags({
+  allowDefaultLogging: true,
+  // put relevant configs depending on your usecase
+})
 
 TSLogger.getInstance({ 
-  enableMonkeyPatch: true
+  features: logFeatureFlags,
+  logLevelFlags,
 })
 ```
 
@@ -190,12 +142,101 @@ i.e.,
 - import the package & add the config
 
 ```typescript
-import TSLogger from `tremendously-small-logger`
+import { TSLogger } from `tremendously-small-logger`
 
-const logger = TSLogger.getInstance({ 
-  enableMonkeyPatch: false,  
+const logFeatureFlags = new TSFeatureFlags({
+  enableMonkeyPatch: false,
   // put relevant configs depending on your usecase
 })
 
+const logLevelFlags = new TSLogLevelFlags({
+  allowDefaultLogging: true,
+  // put relevant configs depending on your usecase
+})
+
+const logger = TSLogger.getInstance({ 
+  features: logFeatureFlags,
+  logLevelFlags,
+})
 ```
 
+
+## FAQ
+
+### What are the Custom Handlers?
+A Custom Handler is an additional hook to give you the utmost flexibility to run your own hook whenever a certain method is invoked. One common usage case is to add an analytics event or perhaps trigger an alarm or perhaps log to Cloudwatch etc whenever certain logs are being printed.
+
+```typescript
+const handlers: TSLoggingHandlerConfig = {
+  log: ( /* ...args */) => {
+    /*
+    * someApiClient.post('/analytics-endpoint', {
+    *   data: {
+    *     args: args,
+    *     type: ConsoleActionTypes.LOG
+    *   }
+    * }
+    * */
+  },
+  error: ( /* ...args */) => {
+    /*
+    * someApiClient.post('/analytics-endpoint', {
+    *   data: {
+    *     args: args,
+    *     type: ConsoleActionTypes.ERROR
+    *   }
+    * }
+    * */
+  },
+  debug: ( /* ...args */) => {
+    /*
+    * someApiClient.post('/analytics-endpoint', {
+    *   data: {
+    *     args: args,
+    *     type: ConsoleActionTypes.DEBUG
+    *   }
+    * }
+    * */
+  },
+  warn: ( /* ...args */) => {
+    /*
+    * someApiClient.post('/analytics-endpoint', {
+    *   data: {
+    *     args: args,
+    *     type: ConsoleActionTypes.WARN
+    *   }
+    * }
+    * */
+  },
+  info: ( /* ...args */) => {
+    /*
+    * someApiClient.post('/analytics-endpoint', {
+    *   data: {
+    *     args: args,
+    *     type: ConsoleActionTypes.INFO
+    *   }
+    * }
+    * */
+  },
+  trace: ( /* ...args */) => {
+    /*
+    * someApiClient.post('/analytics-endpoint', {
+    *   data: {
+    *     args: args,
+    *     type: ConsoleActionTypes.TRACE
+    *   }
+    * }
+    * */
+  },
+}
+```
+
+### What is the order of execution for the hooks & the logs?
+Internally the handler you pass is invoked in the following manner:
+
+```typescript
+_runWithAugmentation({func, handler}) {
+  handler() // Your custom hook
+  func() // Your base logger
+}
+```
