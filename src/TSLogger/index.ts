@@ -1,8 +1,8 @@
-import {TSLogLevelFlags} from "../TSFlags/logLevelFlags";
-import {TSFeatureFlags} from "../TSFlags/featureFlags";
-import {TSOriginalConsoleClass} from "../TSOriginalConsoleClass";
-import {TSLoggingHandlerConfig} from "./types";
-import {Utility} from "../Utility";
+import { TSLogLevelFlags } from "../TSFlags/logLevelFlags";
+import { TSFeatureFlags } from "../TSFlags/featureFlags";
+import { TSOriginalConsoleClass } from "../TSOriginalConsoleClass";
+import { TSLoggingHandlerConfig } from "./types";
+import { TSLoggerUtility } from "../Utility";
 
 interface IRunWithAugmentationProps {
   func: Function
@@ -348,12 +348,12 @@ export class TSLogger {
   private _activateGlobalErrorTracing() {
     const boundedTrace = this.trace.bind(this)
 
-    if (Utility.isBrowserEnvironment()) {
+    if (TSLoggerUtility.isBrowserEnvironment()) {
       window.addEventListener('error', boundedTrace)
       return
     }
 
-    if (Utility.isNodeEnvironment()) {
+    if (TSLoggerUtility.isNodeEnvironment()) {
       process.on('unhandledRejection', (reason, p) => {
         boundedTrace(reason, 'Unhandled Rejection at Promise', p);
       }).on('uncaughtException', err => {

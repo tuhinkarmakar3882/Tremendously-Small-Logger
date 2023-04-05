@@ -1,4 +1,4 @@
-import {TSFeatureFlags, TSLogger, TSLoggingHandlerConfig, TSLogLevelFlags} from "../src";
+import { TSFeatureFlags, TSLogger, TSLoggingHandlerConfig, TSLogLevelFlags } from "../src";
 
 
 describe('Tremendously Small Logger Tests', () => {
