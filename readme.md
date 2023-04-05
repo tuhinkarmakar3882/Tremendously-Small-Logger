@@ -16,10 +16,10 @@ First Import the package,
 
 ```typescript
 import {
-    TSFeatureFlags,
-    TSLogger,
-    TSLoggingHandlerConfig,
-    TSLogLevelFlags
+  TSFeatureFlags,
+  TSLogger,
+  TSLoggingHandlerConfig,
+  TSLogLevelFlags
 } from "tremendously-small-logger"
 ```
 
@@ -29,11 +29,11 @@ Next Prepare the LogLevel Config
 // Note: By Default Everything is set to false! Make sure to Turn them on accordingly!
 
 const logLevelFlags = new TSLogLevelFlags({
-    allowWarningLogging: true,
-    allowErrorLogging: true,
-    allowDebugLogging: true,
-    allowDefaultLogging: true,
-    allowInfoLogging: true,
+  allowWarningLogging: true,
+  allowErrorLogging: true,
+  allowDebugLogging: true,
+  allowDefaultLogging: true,
+  allowInfoLogging: true,
 })
 ```
 
@@ -41,9 +41,9 @@ Next Prepare the Log's Feature Level Config
 
 ```typescript
 const logFeatureFlags = new TSFeatureFlags({
-    enableMonkeyPatch: boolean,
-    enableGlobalErrorTracing: boolean,
-    enableStackTraceInErrorLogs: boolean,
+  enableMonkeyPatch: boolean,
+  enableGlobalErrorTracing: boolean,
+  enableStackTraceInErrorLogs: boolean,
 })
 ```
 
@@ -51,12 +51,12 @@ Set up custom Hooks/Handlers that you wish to run, whenever the logger is invoke
 
 ```typescript
 const customHandlers: TSLoggingHandlerConfig = {
-    log: (...args) => handlerForConsoleLog(...args),
-    info: (...args) => handlerForConsoleInfo(...args),
-    warn: (...args) => handlerForConsoleWarn(...args),
-    error: (...args) => handlerForConsoleError(...args),
-    debug: (...args) => handlerForConsoleDebug(...args),
-    trace: (...args) => handlerForConsoleTrace(...args),
+  log: (...args) => handlerForConsoleLog(...args),
+  info: (...args) => handlerForConsoleInfo(...args),
+  warn: (...args) => handlerForConsoleWarn(...args),
+  error: (...args) => handlerForConsoleError(...args),
+  debug: (...args) => handlerForConsoleDebug(...args),
+  trace: (...args) => handlerForConsoleTrace(...args),
 }
 ```
 
@@ -70,10 +70,10 @@ And Get the Singleton instance!
 
 ```typescript
 const logger = TSLogger.getInstance({
-    features: logFeatureFlags,
-    handlers: mockedHandlers,
-    logLevelFlags,
-    logPrefix,
+  features: logFeatureFlags,
+  handlers: mockedHandlers,
+  logLevelFlags,
+  logPrefix,
 })
 ```
 
@@ -111,17 +111,17 @@ There are two ways of using the package
 import {TSLogger} from "tremendously-small-logger"
 
 const logFeatureFlags = new TSFeatureFlags({
-    // put relevant configs depending on your usecase
+  // put relevant configs depending on your usecase
 })
 
 const logLevelFlags = new TSLogLevelFlags({
-    allowDefaultLogging: true,
-    // put relevant configs depending on your usecase
+  allowDefaultLogging: true,
+  // put relevant configs depending on your usecase
 })
 
 const logger = TSLogger.getInstance({
-    features: logFeatureFlags,
-    logLevelFlags,
+  features: logFeatureFlags,
+  logLevelFlags,
 })
 
 logger.enableMonkeyPatch()
@@ -133,18 +133,18 @@ Alternatively, you can also pass a flag in the first-time creation, i.e.
 import {TSLogger} from "tremendously-small-logger"
 
 const logFeatureFlags = new TSFeatureFlags({
-    enableMonkeyPatch: true,
-    // put relevant configs depending on your usecase
+  enableMonkeyPatch: true,
+  // put relevant configs depending on your usecase
 })
 
 const logLevelFlags = new TSLogLevelFlags({
-    allowDefaultLogging: true,
-    // put relevant configs depending on your usecase
+  allowDefaultLogging: true,
+  // put relevant configs depending on your usecase
 })
 
 TSLogger.getInstance({
-    features: logFeatureFlags,
-    logLevelFlags,
+  features: logFeatureFlags,
+  logLevelFlags,
 })
 ```
 
@@ -175,18 +175,18 @@ i.e.,
 import {TSLogger} from "tremendously-small-logger"
 
 const logFeatureFlags = new TSFeatureFlags({
-    enableMonkeyPatch: false,
-    // put relevant configs depending on your usecase
+  enableMonkeyPatch: false,
+  // put relevant configs depending on your usecase
 })
 
 const logLevelFlags = new TSLogLevelFlags({
-    allowDefaultLogging: true,
-    // put relevant configs depending on your usecase
+  allowDefaultLogging: true,
+  // put relevant configs depending on your usecase
 })
 
 const logger = TSLogger.getInstance({
-    features: logFeatureFlags,
-    logLevelFlags,
+  features: logFeatureFlags,
+  logLevelFlags,
 })
 ```
 
@@ -200,66 +200,66 @@ etc whenever certain logs are being printed.
 
 ```typescript
 const handlers: TSLoggingHandlerConfig = {
-    log: ( /* ...args */) => {
-        /*
-        * someApiClient.post('/analytics-endpoint', {
-        *   data: {
-        *     args: args,
-        *     type: ConsoleActionTypes.LOG
-        *   }
-        * }
-        * */
-    },
-    error: ( /* ...args */) => {
-        /*
-        * someApiClient.post('/analytics-endpoint', {
-        *   data: {
-        *     args: args,
-        *     type: ConsoleActionTypes.ERROR
-        *   }
-        * }
-        * */
-    },
-    debug: ( /* ...args */) => {
-        /*
-        * someApiClient.post('/analytics-endpoint', {
-        *   data: {
-        *     args: args,
-        *     type: ConsoleActionTypes.DEBUG
-        *   }
-        * }
-        * */
-    },
-    warn: ( /* ...args */) => {
-        /*
-        * someApiClient.post('/analytics-endpoint', {
-        *   data: {
-        *     args: args,
-        *     type: ConsoleActionTypes.WARN
-        *   }
-        * }
-        * */
-    },
-    info: ( /* ...args */) => {
-        /*
-        * someApiClient.post('/analytics-endpoint', {
-        *   data: {
-        *     args: args,
-        *     type: ConsoleActionTypes.INFO
-        *   }
-        * }
-        * */
-    },
-    trace: ( /* ...args */) => {
-        /*
-        * someApiClient.post('/analytics-endpoint', {
-        *   data: {
-        *     args: args,
-        *     type: ConsoleActionTypes.TRACE
-        *   }
-        * }
-        * */
-    },
+  log: ( /* ...args */) => {
+    /*
+    * someApiClient.post('/analytics-endpoint', {
+    *   data: {
+    *     args: args,
+    *     type: ConsoleActionTypes.LOG
+    *   }
+    * }
+    * */
+  },
+  error: ( /* ...args */) => {
+    /*
+    * someApiClient.post('/analytics-endpoint', {
+    *   data: {
+    *     args: args,
+    *     type: ConsoleActionTypes.ERROR
+    *   }
+    * }
+    * */
+  },
+  debug: ( /* ...args */) => {
+    /*
+    * someApiClient.post('/analytics-endpoint', {
+    *   data: {
+    *     args: args,
+    *     type: ConsoleActionTypes.DEBUG
+    *   }
+    * }
+    * */
+  },
+  warn: ( /* ...args */) => {
+    /*
+    * someApiClient.post('/analytics-endpoint', {
+    *   data: {
+    *     args: args,
+    *     type: ConsoleActionTypes.WARN
+    *   }
+    * }
+    * */
+  },
+  info: ( /* ...args */) => {
+    /*
+    * someApiClient.post('/analytics-endpoint', {
+    *   data: {
+    *     args: args,
+    *     type: ConsoleActionTypes.INFO
+    *   }
+    * }
+    * */
+  },
+  trace: ( /* ...args */) => {
+    /*
+    * someApiClient.post('/analytics-endpoint', {
+    *   data: {
+    *     args: args,
+    *     type: ConsoleActionTypes.TRACE
+    *   }
+    * }
+    * */
+  },
 }
 ```
 
@@ -269,8 +269,8 @@ Internally the handler you pass is invoked in the following manner:
 
 ```typescript
 function runWithAugmentation({func, handler}) {
-    handler() // Your custom hook
-    func() // Your base logger
+  handler() // Your custom hook
+  func() // Your base logger
 }
 ```
 
@@ -280,12 +280,12 @@ Please find the list below
 
 ```typescript
 export {
-    TSLogger,
-    TSFeatureFlags,
-    TSLogLevelFlags,
-    ConsoleActionType,
-    TSLoggerUtility,
-    TSLoggingHandlerConfig,
+  TSLogger,
+  TSFeatureFlags,
+  TSLogLevelFlags,
+  ConsoleActionType,
+  TSLoggerUtility,
+  TSLoggingHandlerConfig,
 }
 ```
 
