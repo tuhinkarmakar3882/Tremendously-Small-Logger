@@ -1,4 +1,4 @@
-export class Utility {
+export class TSLoggerUtility {
   static isBrowserEnvironment() {
     return new Function("try {return this===window}catch(e){ return false}")()
   }
