@@ -1,21 +1,25 @@
 {
-  "name": "tremendously-small-logger",
+  "name": "extended-logger",
   "version": "1.0.0",
   "description": "This is a small module to enrich console logging behaviour",
-  "main": "src/index.ts",
+  "main": "src/TSLogger/index.ts",
   "scripts": {
     "start:dev": "npx nodemon",
     "build": "rimraf ./build && tsc",
-    "start": "npm run build && node build/index.js"
+    "start": "npm run build && node build/index.js",
+    "test": "jest"
   },
   "author": "Tuhin",
   "license": "ISC",
   "devDependencies": {
+    "@types/jest": "^29.5.0",
     "@types/node": "^18.15.11",
     "@types/node-fetch": "^2.6.3",
+    "jest": "^29.5.0",
     "nodemon": "^2.0.22",
     "parcel": "^2.8.3",
     "rimraf": "^4.4.1",
+    "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.3"
   }
