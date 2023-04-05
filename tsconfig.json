@@ -8,10 +8,12 @@
     ],
     "allowJs": true,
     "outDir": "build",
-    "rootDir": "src",
     "strict": true,
     "noImplicitAny": false,
     "esModuleInterop": true,
     "resolveJsonModule": true
-  }
+  },
+  "include": [
+    "src",
+  ]
 }
