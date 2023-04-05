@@ -10,6 +10,9 @@
 - [FAQ](#faq)
 - [For Development](#for-development)
 
+> This is a versatile libary to supercharge your console.logs and enables utmost customisibility by bringing in your own handler methods to hook into the logging events.
+
+
 # Getting Started:
 
 First Import the package,
