@@ -32,11 +32,11 @@ Next Prepare the LogLevel Config
 // Note: By Default Everything is set to false! Make sure to Turn them on accordingly!
 
 const logLevelFlags = new TSLogLevelFlags({
-  allowWarningLogging: true,
-  allowErrorLogging: true,
-  allowDebugLogging: true,
-  allowDefaultLogging: true,
-  allowInfoLogging: true,
+  allowWarningLogging: boolean,
+  allowErrorLogging: boolean,
+  allowDebugLogging: boolean,
+  allowDefaultLogging: boolean,
+  allowInfoLogging: boolean,
 })
 ```
 
