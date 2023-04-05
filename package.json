@@ -1,8 +1,8 @@
 {
   "name": "tremendously-small-logger",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "This is a small module to enrich console logging behaviour",
-  "main": "src/TSLogger/index.ts",
+  "main": "src/index.ts",
   "scripts": {
     "start:dev": "npx nodemon",
     "build": "rimraf ./build && tsc",
