@@ -15,7 +15,12 @@
 First Import the package,
 
 ```typescript
-import {TSFeatureFlags, TSLogger, TSLoggingHandlerConfig, TSLogLevelFlags} from "tremendously-small-logger"
+import {
+    TSFeatureFlags,
+    TSLogger,
+    TSLoggingHandlerConfig,
+    TSLogLevelFlags
+} from "tremendously-small-logger"
 ```
 
 Next Prepare the LogLevel Config
