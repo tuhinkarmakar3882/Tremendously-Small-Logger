@@ -2,6 +2,13 @@
 
 > Author: Tuhin (https://linkedin.com/in/tuhinkarmakar3882)
 
+[![Npm package version](https://badgen.net/npm/v/tremendously-small-logger)](https://npmjs.com/package/tremendously-small-logger)
+[![Npm package Downloads](https://badgen.net/npm/dt/tremendously-small-logger)](https://npmjs.com/package/tremendously-small-logger)
+[![Npm package license](https://badgen.net/npm/license/tremendously-small-logger)](https://npmjs.com/package/tremendously-small-logger)
+[![Bundlephobia MIN](https://badgen.net/bundlephobia/min/tremendously-small-logger)](https://bundlephobia.com/package/tremendously-small-logger)
+[![Bundlephobia MIN ZIP](https://badgen.net/bundlephobia/minzip/tremendously-small-logger)](https://bundlephobia.com/package/tremendously-small-logger)
+
+
 ### Table of Contents:
 
 - [Overview](#overview)
