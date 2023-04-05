@@ -105,7 +105,7 @@ There are two ways of using the package
 
 2. [Recommended] Use it **without** MonkeyPatching
 
-## 1. [Quick Migrate] With MonkeyPatching
+## 1. [Quick] With MonkeyPatching
 
 - Go to your entry point in the code, e.g. `index.ts` or `App.ts` etc.
 - import the package & add the config
