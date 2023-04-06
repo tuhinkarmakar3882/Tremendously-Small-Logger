@@ -1,9 +1,8 @@
 .idea/
 .cache/
 dist/
-build/
 node_modules/
-# src/
+src/
 test/
 jest.config.js
 nodemon.json
