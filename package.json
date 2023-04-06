@@ -2,7 +2,9 @@
   "name": "tremendously-small-logger",
   "version": "1.0.15",
   "description": "This is a versatile libary to supercharge the global/window console object and enables utmost customisibility by means of custom handlers to hook into the logging events.",
-  "main": "src/index.ts",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "files": ["build", "README.md", "package.json"],
   "keywords": [
     "javascript-logger",
     "typescript-logger",
