@@ -1,6 +1,6 @@
 {
   "name": "tremendously-small-logger",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "description": "This is a small module to enrich console logging behaviour",
   "main": "build/index.js",
   "scripts": {

@@ -1,6 +1,7 @@
 # TSLogger - Tremendously Small Logger
 
 > Author: Tuhin (https://linkedin.com/in/tuhinkarmakar3882)
+> Github: https://github.com/tuhinkarmakar3882/Tremendously-Small-Logger 
 
 [![Npm package version](https://badgen.net/npm/v/tremendously-small-logger)](https://npmjs.com/package/tremendously-small-logger)
 [![Npm package Downloads](https://badgen.net/npm/dt/tremendously-small-logger)](https://npmjs.com/package/tremendously-small-logger)

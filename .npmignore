@@ -4,3 +4,6 @@ dist/
 node_modules/
 src/
 test/
+jest.config.js
+nodemon.json
+tsconfig.json
