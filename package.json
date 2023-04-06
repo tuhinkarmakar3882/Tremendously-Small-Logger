@@ -1,9 +1,14 @@
 {
   "name": "tremendously-small-logger",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "This is a versatile libary to supercharge the global/window console object and enables utmost customisibility by means of custom handlers to hook into the logging events.",
   "main": "build/index.js",
-  "keywords": ["javascript-logger", "typescript-logger", "tremendously-small-logger", "logging utility"],
+  "keywords": [
+    "javascript-logger",
+    "typescript-logger",
+    "tremendously-small-logger",
+    "logging utility"
+  ],
   "homepage": "https://github.com/tuhinkarmakar3882/Tremendously-Small-Logger#readme",
   "scripts": {
     "start:dev": "npx nodemon",
