@@ -1,15 +1,21 @@
 {
   "name": "tremendously-small-logger",
-  "version": "1.0.7",
-  "description": "This is a small module to enrich console logging behaviour",
+  "version": "1.0.8",
+  "description": "This is a versatile libary to supercharge the global/window console object and enables utmost customisibility by means of custom handlers to hook into the logging events.",
   "main": "build/index.js",
+  "keywords": ["javascript-logger", "typescript-logger", "tremendously-small-logger", "logging utility"],
+  "homepage": "https://github.com/tuhinkarmakar3882/Tremendously-Small-Logger#readme",
   "scripts": {
     "start:dev": "npx nodemon",
     "build": "rimraf ./build && tsc",
     "start": "npm run build && node build/index.js",
     "test": "jest"
   },
-  "author": "Tuhin",
+  "author": "Tuhin Karmakar <tuhinkarmakar3882+npm@gmail.com> (https://www.linkedin.com/in/tuhinkarmakar3882/)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tuhinkarmakar3882/Tremendously-Small-Logger"
+  },
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^29.5.0",
