@@ -16,10 +16,10 @@
     "start": "npm run build && node build/index.js",
     "test": "jest"
   },
-  "author": "Tuhin Karmakar <tuhinkarmakar3882+npm@gmail.com> (https://www.linkedin.com/in/tuhinkarmakar3882/)",
+  "author": "Tuhin Karmakar",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tuhinkarmakar3882/Tremendously-Small-Logger"
+    "url": "https://github.com/tuhinkarmakar3882/Tremendously-Small-Logger.git"
   },
   "license": "MIT",
   "devDependencies": {
