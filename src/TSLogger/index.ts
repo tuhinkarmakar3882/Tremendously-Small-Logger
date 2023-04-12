@@ -59,6 +59,10 @@ export class TSLogger {
     return this._logger;
   }
 
+  static killInstance(): void {
+    this._logger = undefined;
+  }
+
   log(...args) {
     if (!this._logLevelFlags.allowDefaultLogging) {
       return;
