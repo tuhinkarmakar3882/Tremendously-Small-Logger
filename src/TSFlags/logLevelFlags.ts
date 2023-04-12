@@ -1,24 +1,28 @@
-interface TSLogLevelFlagsProps {
-  allowDefaultLogging?: boolean
-  allowInfoLogging?: boolean
-  allowErrorLogging?: boolean
-  allowDebugLogging?: boolean
-  allowWarningLogging?: boolean
-}
+type TSLogLevelFlagsProps = {
+  allowDefaultLogging?: boolean;
+  allowInfoLogging?: boolean;
+  allowErrorLogging?: boolean;
+  allowDebugLogging?: boolean;
+  allowWarningLogging?: boolean;
+};
 
 export class TSLogLevelFlags {
   private readonly _allowDefaultLogging: boolean;
+
   private readonly _allowInfoLogging: boolean;
+
   private readonly _allowErrorLogging: boolean;
+
   private readonly _allowDebugLogging: boolean;
+
   private readonly _allowWarningLogging: boolean;
 
   constructor(props?: TSLogLevelFlagsProps) {
-    this._allowDefaultLogging = !!props?.allowDefaultLogging
-    this._allowInfoLogging = !!props?.allowInfoLogging
-    this._allowErrorLogging = !!props?.allowErrorLogging
-    this._allowDebugLogging = !!props?.allowDebugLogging
-    this._allowWarningLogging = !!props?.allowWarningLogging
+    this._allowDefaultLogging = !!props?.allowDefaultLogging;
+    this._allowInfoLogging = !!props?.allowInfoLogging;
+    this._allowErrorLogging = !!props?.allowErrorLogging;
+    this._allowDebugLogging = !!props?.allowDebugLogging;
+    this._allowWarningLogging = !!props?.allowWarningLogging;
   }
 
   get allowDefaultLogging(): boolean {

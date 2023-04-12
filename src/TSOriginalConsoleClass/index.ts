@@ -1,18 +1,23 @@
 export class TSOriginalConsoleClass {
-  private readonly _logMethod: (...args: any[]) => void
-  private readonly _infoMethod: (...args: any[]) => void
-  private readonly _errorMethod: (...args: any[]) => void
-  private readonly _debugMethod: (...args: any[]) => void
-  private readonly _warnMethod: (...args: any[]) => void
-  private readonly _traceMethod: (...args: any[]) => void
+  private readonly _logMethod: (...args: Array<unknown>) => void;
+
+  private readonly _infoMethod: (...args: Array<unknown>) => void;
+
+  private readonly _errorMethod: (...args: Array<unknown>) => void;
+
+  private readonly _debugMethod: (...args: Array<unknown>) => void;
+
+  private readonly _warnMethod: (...args: Array<unknown>) => void;
+
+  private readonly _traceMethod: (...args: Array<unknown>) => void;
 
   constructor(consoleInstance: Console) {
-    this._logMethod = consoleInstance.log
-    this._infoMethod = consoleInstance.info
-    this._errorMethod = consoleInstance.error
-    this._debugMethod = consoleInstance.debug
-    this._warnMethod = consoleInstance.warn
-    this._traceMethod = consoleInstance.trace
+    this._logMethod = consoleInstance.log;
+    this._infoMethod = consoleInstance.info;
+    this._errorMethod = consoleInstance.error;
+    this._debugMethod = consoleInstance.debug;
+    this._warnMethod = consoleInstance.warn;
+    this._traceMethod = consoleInstance.trace;
   }
 
   get logMethod() {

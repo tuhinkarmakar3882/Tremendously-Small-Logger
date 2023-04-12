@@ -1,9 +1,13 @@
 export class TSLoggerUtility {
   static isBrowserEnvironment() {
-    return new Function("try {return this===window}catch(e){ return false}")()
+    const globalScopedFunction = new Function('try {return this===window}catch(e){ return false}');
+
+    return globalScopedFunction();
   }
 
   static isNodeEnvironment() {
-    return new Function("try {return this===global}catch(e){return false}")()
+    const globalScopedFunction = new Function('try {return this===global}catch(e){return false}');
+
+    return globalScopedFunction();
   }
 }
