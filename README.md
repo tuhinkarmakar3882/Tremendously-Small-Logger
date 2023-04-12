@@ -55,10 +55,23 @@ Next Prepare the Log's Feature Level Config
 
 ```typescript
 const logFeatureFlags = new TSFeatureFlags({
-  enableMonkeyPatch: boolean,
+  enableGlobalMonkeyPatching: boolean,
   enableGlobalErrorTracing: boolean,
   enableStackTraceInErrorLogs: boolean,
+  partialMonkeyPatchConfig: PartialMonkeyPatchConfig
 })
+```
+
+Note that PartialMonkeyPatchConfig can be defined as the following
+```typescript
+type PartialMonkeyPatchConfig = {
+  log?: boolean;
+  info?: boolean;
+  error?: boolean;
+  debug?: boolean;
+  warning?: boolean;
+  trace?: boolean;
+};
 ```
 
 Set up custom Hooks/Handlers, whenever the logger is invoked
@@ -138,7 +151,7 @@ const logger = TSLogger.getInstance({
   logLevelFlags,
 })
 
-logger.enableMonkeyPatch()
+logger.enableGlobalMonkeyPatching()
 ```
 
 Alternatively, a flag can be passed in the first-time creation, i.e.
@@ -147,7 +160,7 @@ Alternatively, a flag can be passed in the first-time creation, i.e.
 import {TSLogger} from "tremendously-small-logger"
 
 const logFeatureFlags = new TSFeatureFlags({
-  enableMonkeyPatch: true,
+  enableGlobalMonkeyPatching: true,
   // set other relevant configs(if required)
 })
 
@@ -180,7 +193,7 @@ logger.disableMonkeyPatch()
 It is advisable not to monkey patch & replace the regular console.<log/info/error/debug/warn> with logger.<
 log/info/error/debug/warn>.
 
-To achieve this, set the `enableMonkeyPatch` flag to `false`.
+To achieve this, set the `enableGlobalMonkeyPatching` flag to `false`.
 
 i.e.,
 
@@ -191,7 +204,7 @@ i.e.,
 import {TSLogger} from "tremendously-small-logger"
 
 const logFeatureFlags = new TSFeatureFlags({
-  enableMonkeyPatch: false,
+  enableGlobalMonkeyPatching: false,
   // set other relevant configs(if required)
 })
 

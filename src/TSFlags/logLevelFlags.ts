@@ -4,6 +4,7 @@ type TSLogLevelFlagsProps = {
   allowErrorLogging?: boolean;
   allowDebugLogging?: boolean;
   allowWarningLogging?: boolean;
+  allowTraceLogging?: boolean;
 };
 
 export class TSLogLevelFlags {
@@ -17,12 +18,15 @@ export class TSLogLevelFlags {
 
   private readonly _allowWarningLogging: boolean;
 
+  private readonly _allowTraceLogging: boolean;
+
   constructor(props?: TSLogLevelFlagsProps) {
     this._allowDefaultLogging = !!props?.allowDefaultLogging;
     this._allowInfoLogging = !!props?.allowInfoLogging;
     this._allowErrorLogging = !!props?.allowErrorLogging;
     this._allowDebugLogging = !!props?.allowDebugLogging;
     this._allowWarningLogging = !!props?.allowWarningLogging;
+    this._allowTraceLogging = !!props?.allowTraceLogging;
   }
 
   get allowDefaultLogging(): boolean {
@@ -43,5 +47,9 @@ export class TSLogLevelFlags {
 
   get allowWarningLogging(): boolean {
     return this._allowWarningLogging;
+  }
+
+  get allowTraceLogging(): boolean {
+    return this._allowTraceLogging;
   }
 }
