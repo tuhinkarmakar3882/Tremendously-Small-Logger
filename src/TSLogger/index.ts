@@ -465,7 +465,24 @@ export class TSLogger {
     const boundedTrace = this.trace.bind(this);
 
     if (TSLoggerUtility.isBrowserEnvironment()) {
-      window.addEventListener('error', boundedTrace);
+      window.addEventListener('error', (errorEvent: ErrorEvent) => {
+        boundedTrace({
+          colno: errorEvent.colno,
+          error: errorEvent.error,
+          filename: errorEvent.filename,
+          lineno: errorEvent.lineno,
+          message: errorEvent.message,
+        });
+      });
+      window.addEventListener('unhandledrejection', (promiseRejectionEvent) => {
+        boundedTrace({
+          eventType: 'unhandledrejection',
+          reason: promiseRejectionEvent.reason,
+          type: promiseRejectionEvent.type,
+          promise: promiseRejectionEvent.promise,
+          eventStackTree: promiseRejectionEvent.reason?.stack,
+        });
+      });
       return;
     }
 
