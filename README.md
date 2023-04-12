@@ -48,6 +48,7 @@ const logLevelFlags = new TSLogLevelFlags({
   allowDebugLogging: boolean,
   allowDefaultLogging: boolean,
   allowInfoLogging: boolean,
+  allowTraceLogging: boolean,
 })
 ```
 
