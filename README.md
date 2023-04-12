@@ -2,14 +2,13 @@
 
 > Author: Tuhin (https://linkedin.com/in/tuhinkarmakar3882)
 >
-> Github: https://github.com/tuhinkarmakar3882/Tremendously-Small-Logger 
+> Github: https://github.com/tuhinkarmakar3882/Tremendously-Small-Logger
 
 [![Npm package version](https://badgen.net/npm/v/tremendously-small-logger)](https://npmjs.com/package/tremendously-small-logger)
 [![Npm package Downloads](https://badgen.net/npm/dt/tremendously-small-logger)](https://npmjs.com/package/tremendously-small-logger)
 [![Npm package license](https://badgen.net/npm/license/tremendously-small-logger)](https://npmjs.com/package/tremendously-small-logger)
 [![Bundlephobia MIN](https://badgen.net/bundlephobia/min/tremendously-small-logger)](https://bundlephobia.com/package/tremendously-small-logger)
 [![Bundlephobia MIN ZIP](https://badgen.net/bundlephobia/minzip/tremendously-small-logger)](https://bundlephobia.com/package/tremendously-small-logger)
-
 
 ### Table of Contents:
 
@@ -20,10 +19,10 @@
 - [FAQ](#faq)
 - [For Development](#for-development)
 
-
 # Overview
 
-This is a versatile libary to supercharge the global/window console object and enables utmost customisibility by means of custom handlers to hook into the logging events.
+This is a versatile library to supercharge the global/window console object and enables utmost customisibility by means
+of custom handlers to hook into the logging events.
 
 # Getting Started:
 
@@ -67,7 +66,7 @@ Set up custom Hooks/Handlers, whenever the logger is invoked
 ```typescript
 const customHandlers: TSLoggingHandlerConfig = {
   log: (args: any[]) => void,
-  info: (args: any[]) => void, 
+  info: (args: any[]) => void,
   warn: (args: any[]) => void,
   error: (args: any[]) => void,
   debug: (args: any[]) => void,
@@ -134,6 +133,7 @@ const logLevelFlags = new TSLogLevelFlags({
 })
 
 const logger = TSLogger.getInstance({
+  // set other relevant configs(if required)
   features: logFeatureFlags,
   logLevelFlags,
 })
@@ -157,6 +157,7 @@ const logLevelFlags = new TSLogLevelFlags({
 })
 
 TSLogger.getInstance({
+  // set other relevant configs(if required)
   features: logFeatureFlags,
   logLevelFlags,
 })
@@ -168,7 +169,8 @@ MonkeyPatching can also be disabled on the fly:
 logger.disableMonkeyPatch()
 ```
 
-> This approach allows to use the exising console.<log/info/error/debug/warn> methods(present in the global/window object) & custom handler 
+> This approach allows to use the exising console.<log/info/error/debug/warn> methods(present in the global/window
+> object) & custom handler
 > will be invoked at runtime(if any), before calling the console methods.
 
 ---
@@ -199,6 +201,7 @@ const logLevelFlags = new TSLogLevelFlags({
 })
 
 const logger = TSLogger.getInstance({
+  // set other relevant configs(if required)
   features: logFeatureFlags,
   logLevelFlags,
 })
