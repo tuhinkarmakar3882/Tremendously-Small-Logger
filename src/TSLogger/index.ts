@@ -1,8 +1,8 @@
-import { TSLogLevelFlags } from '../TSFlags/logLevelFlags';
-import { TSFeatureFlags } from '../TSFlags/featureFlags';
-import { TSOriginalConsoleClass } from '../TSOriginalConsoleClass';
-import { TSLoggingHandlerConfig } from './types';
-import { TSLoggerUtility } from '../Utility';
+import {TSLogLevelFlags} from '../TSFlags/logLevelFlags';
+import {TSFeatureFlags} from '../TSFlags/featureFlags';
+import {TSOriginalConsoleClass} from '../TSOriginalConsoleClass';
+import {TSLoggingHandlerConfig} from './types';
+import {TSLoggerUtility} from '../Utility';
 
 type IRunWithAugmentationProps = {
   func: () => void
@@ -64,129 +64,60 @@ export class TSLogger {
   }
 
   log(...args) {
-    if (!this._logLevelFlags.allowDefaultLogging) {
-      return;
-    }
-
-    const newArgs = this._getFinalArgs(args);
-    const boundedHandler = this._handlers.log;
-
-    this._runWithAugmentation({
-      func: () => console.log(...newArgs),
-      handler: () => {
-        if (typeof boundedHandler !== 'function') {
-          return;
-        }
-
-        boundedHandler(...args);
-      },
+    this._run({
+      args,
+      customHandler: this._handlers.log,
+      isEnabled: this._logLevelFlags.allowDefaultLogging,
+      method: console.log,
     });
   }
 
   info(...args) {
-    if (!this._logLevelFlags.allowInfoLogging) {
-      return;
-    }
-
-    const newArgs = this._getFinalArgs(args);
-    const boundedHandler = this._handlers.info;
-
-    this._runWithAugmentation({
-      func: () => console.info(...newArgs),
-      handler: () => {
-        if (typeof boundedHandler !== 'function') {
-          return;
-        }
-
-        boundedHandler(...args);
-      },
+    this._run({
+      args,
+      customHandler: this._handlers.info,
+      isEnabled: this._logLevelFlags.allowInfoLogging,
+      method: console.info,
     });
   }
 
   error(...args) {
-    if (!this._logLevelFlags.allowErrorLogging) {
-      return;
-    }
-
-    const newArgs = this._getFinalArgs(args);
-    const boundedHandler = this._handlers.error;
-
-    const boundedTraceHandler = this.trace.bind(this);
-    const _enableStackTraceInErrorLogs = this._logFeatureFlags.enableStackTraceInErrorLogs;
-
-    this._runWithAugmentation({
-      func: () => {
-        console.error(...newArgs);
-
-        if (_enableStackTraceInErrorLogs) {
-          boundedTraceHandler(...newArgs);
-        }
-      },
-      handler: () => {
-        if (typeof boundedHandler !== 'function') {
-          return;
-        }
-
-        boundedHandler(...args);
-      },
+    this._run({
+      args,
+      customHandler: this._handlers.error,
+      isEnabled: this._logLevelFlags.allowErrorLogging,
+      method: console.error,
     });
+
+    if (this._logFeatureFlags.enableStackTraceInErrorLogs) {
+      this.trace(args)
+    }
   }
 
   trace(...args) {
-    const newArgs = this._getFinalArgs(args);
-    const boundedHandler = this._handlers.trace;
-
-    newArgs.push({ stackTrace: new Error().stack });
-
-    this._runWithAugmentation({
-      func: () => console.trace(...newArgs),
-      handler: () => {
-        if (typeof boundedHandler !== 'function') {
-          return;
-        }
-
-        boundedHandler(...newArgs);
-      },
+    this._run({
+      args: [...args, { stackTrace: new Error().stack }],
+      customHandler: this._handlers.trace,
+      isEnabled: this._logLevelFlags.allowTraceLogging,
+      method: console.trace,
     });
   }
 
   debug(...args) {
-    if (!this._logLevelFlags.allowDebugLogging) {
-      return;
-    }
-
-    const newArgs = this._getFinalArgs(args);
-    const boundedHandler = this._handlers.debug;
-
-    this._runWithAugmentation({
-      func: () => console.debug(...newArgs),
-      handler: () => {
-        if (typeof boundedHandler !== 'function') {
-          return;
-        }
-
-        boundedHandler(...args);
-      },
+    this._run({
+      args,
+      customHandler: this._handlers.debug,
+      isEnabled: this._logLevelFlags.allowDebugLogging,
+      method: console.debug,
     });
   }
 
   warn(...args) {
-    if (!this._logLevelFlags.allowWarningLogging) {
-      return;
-    }
-
-    const newArgs = this._getFinalArgs(args);
-    const boundedHandler = this._handlers.warn;
-
-    this._runWithAugmentation({
-      func: () => console.warn(...newArgs),
-      handler: () => {
-        if (typeof boundedHandler !== 'function') {
-          return;
-        }
-
-        boundedHandler(...args);
-      },
+    this._run({
+      args,
+      customHandler: this._handlers.warn,
+      isEnabled: this._logLevelFlags.allowWarningLogging,
+      method: console.warn,
     });
   }
 
@@ -215,7 +146,7 @@ export class TSLogger {
     this._isMonkeyPatched = true;
   }
 
-  private _getFinalArgs(args: Array<any>, overrideMode = false): Array<any> {
+  private _getFinalArgs(args: Array<unknown>, overrideMode = false): Array<unknown> {
     const prefix = typeof this._logPrefix === 'function' ? this._logPrefix() : this._logPrefix;
 
     if (overrideMode) {
@@ -225,201 +156,114 @@ export class TSLogger {
     return this._isMonkeyPatched ? args : [prefix, ...args];
   }
 
-  private _runWithAugmentation({
-    func,
-    handler,
-  }: IRunWithAugmentationProps) {
+  private _runWithAugmentation({ func, handler }: IRunWithAugmentationProps) {
     handler();
     func();
   }
 
   private _performMonkeyPatching() {
-    if (this._logFeatureFlags.enableGlobalMonkeyPatching) {
+    const { enableGlobalMonkeyPatching } = this._logFeatureFlags;
+    const {
+      log: isLogPatched,
+      info: isInfoPatched,
+      error: isErrorPatched,
+      debug: isDebugPatched,
+      warning: isWarningPatched,
+      trace: isTracePatched,
+    } = this._logFeatureFlags.partialMonkeyPatchConfig;
+
+    if (enableGlobalMonkeyPatching || isLogPatched) {
       this._monkeyPatchConsoleLog();
-      this._monkeyPatchConsoleInfo();
-      this._monkeyPatchConsoleError();
-      this._monkeyPatchConsoleDebug();
-      this._monkeyPatchConsoleWarn();
-      this._monkeyPatchConsoleTrace();
-
-      return;
     }
 
-    if (this._logFeatureFlags.partialMonkeyPatchConfig.log) {
-      this._monkeyPatchConsoleLog();
-    }
-
-    if (this._logFeatureFlags.partialMonkeyPatchConfig.info) {
+    if (enableGlobalMonkeyPatching || isInfoPatched) {
       this._monkeyPatchConsoleInfo();
     }
 
-    if (this._logFeatureFlags.partialMonkeyPatchConfig.error) {
+    if (enableGlobalMonkeyPatching || isErrorPatched) {
       this._monkeyPatchConsoleError();
     }
 
-    if (this._logFeatureFlags.partialMonkeyPatchConfig.debug) {
+    if (enableGlobalMonkeyPatching || isDebugPatched) {
       this._monkeyPatchConsoleDebug();
     }
 
-    if (this._logFeatureFlags.partialMonkeyPatchConfig.warning) {
+    if (enableGlobalMonkeyPatching || isWarningPatched) {
       this._monkeyPatchConsoleWarn();
     }
 
-    if (this._logFeatureFlags.partialMonkeyPatchConfig.trace) {
+    if (enableGlobalMonkeyPatching || isTracePatched) {
       this._monkeyPatchConsoleTrace();
     }
   }
 
   private _monkeyPatchConsoleLog() {
-    const boundedHandler = this._handlers.log;
-    const boundedGetFinalArgs = this._getFinalArgs.bind(this);
-    const boundedRunWithAugmentation = this._runWithAugmentation.bind(this);
-    const boundedAllowDebugLogging = this._logLevelFlags.allowDebugLogging;
-
-    const originalConsoleLogMethod = this._originalConsoleClass.logMethod;
-
-    console.log = (...funcArgs) => {
-      const args = boundedGetFinalArgs(funcArgs, true);
-
-      boundedRunWithAugmentation({
-        func: () => {
-          if (!boundedAllowDebugLogging) {
-            originalConsoleLogMethod.apply(console, ['[+] Suppressing `console.log` as per TSL Config']);
-            return;
-          }
-
-          originalConsoleLogMethod.apply(console, args);
-        },
-        handler: () => {
-          if (typeof boundedHandler !== 'function' || !boundedAllowDebugLogging) {
-            return;
-          }
-
-          boundedHandler(...args);
-        },
-      });
-    };
+    console.log = this._patched({
+      boundedHandler: this._handlers.log,
+      isEnabled: this._logLevelFlags.allowDefaultLogging,
+      originalMethod: this._originalConsoleClass.logMethod,
+    });
   }
 
   private _monkeyPatchConsoleInfo() {
-    const boundedHandler = this._handlers.info;
-    const boundedGetFinalArgs = this._getFinalArgs.bind(this);
-    const boundedRunWithAugmentation = this._runWithAugmentation.bind(this);
-    const boundedAllowInfoLogging = this._logLevelFlags.allowInfoLogging;
-
-    const originalConsoleInfoMethod = this._originalConsoleClass.infoMethod;
-    const originalConsoleLogMethod = this._originalConsoleClass.logMethod;
-
-    console.info = (...funcArgs) => {
-      const args = boundedGetFinalArgs(funcArgs, true);
-
-      boundedRunWithAugmentation({
-        func: () => {
-          if (!boundedAllowInfoLogging) {
-            originalConsoleLogMethod.apply(console, ['[+] Suppressing `console.info` as per TSL Config']);
-            return;
-          }
-
-          originalConsoleInfoMethod.apply(console, args);
-        },
-        handler: () => {
-          if (typeof boundedHandler !== 'function' || !boundedAllowInfoLogging) {
-            return;
-          }
-
-          boundedHandler(...args);
-        },
-      });
-    };
+    console.info = this._patched({
+      boundedHandler: this._handlers.info,
+      isEnabled: this._logLevelFlags.allowInfoLogging,
+      originalMethod: this._originalConsoleClass.infoMethod,
+    });
   }
 
   private _monkeyPatchConsoleWarn() {
-    const boundedHandler = this._handlers.warn;
-    const boundedGetFinalArgs = this._getFinalArgs.bind(this);
-    const boundedRunWithAugmentation = this._runWithAugmentation.bind(this);
-    const boundedAllowWarningLogging = this._logLevelFlags.allowWarningLogging;
-
-    const originalConsoleWarnMethod = this._originalConsoleClass.warnMethod;
-    const originalConsoleLogMethod = this._originalConsoleClass.logMethod;
-
-    console.warn = (...funcArgs) => {
-      const args = boundedGetFinalArgs(funcArgs, true);
-
-      boundedRunWithAugmentation({
-        func: () => {
-          if (!boundedAllowWarningLogging) {
-            originalConsoleLogMethod.apply(console, ['[+] Suppressing `console.warn` as per TSL Config']);
-            return;
-          }
-
-          originalConsoleWarnMethod.apply(console, args);
-        },
-        handler: () => {
-          if (typeof boundedHandler !== 'function' || !boundedAllowWarningLogging) {
-            return;
-          }
-
-          boundedHandler(...args);
-        },
-      });
-    };
+    console.warn = this._patched({
+      boundedHandler: this._handlers.warn,
+      isEnabled: this._logLevelFlags.allowWarningLogging,
+      originalMethod: this._originalConsoleClass.warnMethod,
+    });
   }
 
   private _monkeyPatchConsoleDebug() {
-    const boundedHandler = this._handlers.debug;
-    const boundedGetFinalArgs = this._getFinalArgs.bind(this);
-    const boundedRunWithAugmentation = this._runWithAugmentation.bind(this);
-    const boundedAllowDebugLogging = this._logLevelFlags.allowDebugLogging;
-
-    const originalConsoleDebugMethod = this._originalConsoleClass.debugMethod;
-    const originalConsoleLogMethod = this._originalConsoleClass.logMethod;
-
-    console.debug = (...funcArgs) => {
-      const args = boundedGetFinalArgs(funcArgs, true);
-
-      boundedRunWithAugmentation({
-        func: () => {
-          if (!boundedAllowDebugLogging) {
-            originalConsoleLogMethod.apply(console, ['[+] Suppressing `console.debug` as per TSL Config']);
-            return;
-          }
-
-          originalConsoleDebugMethod.apply(console, args);
-        },
-        handler: () => {
-          if (typeof boundedHandler !== 'function' || !boundedAllowDebugLogging) {
-            return;
-          }
-
-          boundedHandler(...args);
-        },
-      });
-    };
+    console.debug = this._patched({
+      boundedHandler: this._handlers.debug,
+      isEnabled: this._logLevelFlags.allowDebugLogging,
+      originalMethod: this._originalConsoleClass.debugMethod,
+    });
   }
 
   private _monkeyPatchConsoleError() {
-    const boundedHandler = this._handlers.error;
-    const boundedGetFinalArgs = this._getFinalArgs.bind(this);
-    const boundedRunWithAugmentation = this._runWithAugmentation.bind(this);
-    const boundedAllowErrorLogging = this._logLevelFlags.allowErrorLogging;
+    console.error = this._patched({
+      boundedHandler: this._handlers.error,
+      isEnabled: this._logLevelFlags.allowErrorLogging,
+      originalMethod: this._originalConsoleClass.errorMethod,
+    });
+  }
 
-    const originalConsoleErrorMethod = this._originalConsoleClass.errorMethod;
+  private _monkeyPatchConsoleTrace() {
+    console.trace = this._patched({
+      boundedHandler: this._handlers.trace,
+      isEnabled: this._logLevelFlags.allowTraceLogging,
+      originalMethod: this._originalConsoleClass.traceMethod,
+    });
+  }
+
+  private _patched({ boundedHandler, isEnabled, originalMethod }) {
+    const getFinalArgs = this._getFinalArgs.bind(this);
+    const runWithAugmentation = this._runWithAugmentation.bind(this);
     const originalConsoleLogMethod = this._originalConsoleClass.logMethod;
 
-    console.error = (...funcArgs) => {
-      const args = boundedGetFinalArgs(funcArgs, true);
+    return (...funcArgs) => {
+      const args = getFinalArgs(funcArgs, true);
 
-      boundedRunWithAugmentation({
+      runWithAugmentation({
         func: () => {
-          if (!boundedAllowErrorLogging) {
+          if (!isEnabled) {
             originalConsoleLogMethod.apply(console, ['[+] Suppressing `console.error` as per TSL Config']);
             return;
           }
 
-          originalConsoleErrorMethod.apply(console, args);
+          originalMethod.apply(console, args);
         },
         handler: () => {
-          if (typeof boundedHandler !== 'function' || !boundedAllowErrorLogging) {
+          if (typeof boundedHandler !== 'function' || !isEnabled) {
             return;
           }
 
@@ -429,36 +273,23 @@ export class TSLogger {
     };
   }
 
-  private _monkeyPatchConsoleTrace() {
-    const boundedHandler = this._handlers.trace;
-    const boundedGetFinalArgs = this._getFinalArgs.bind(this);
-    const boundedRunWithAugmentation = this._runWithAugmentation.bind(this);
-    const boundedAllowTraceLogging = this._logLevelFlags.allowTraceLogging;
+  private _run({ args, customHandler, isEnabled, method }) {
+    if (!isEnabled) {
+      return;
+    }
 
-    const originalConsoleTraceMethod = this._originalConsoleClass.traceMethod;
-    const originalConsoleLogMethod = this._originalConsoleClass.logMethod;
+    const newArgs = this._getFinalArgs(args);
 
-    console.trace = (...funcArgs) => {
-      const args = boundedGetFinalArgs(funcArgs, true);
+    this._runWithAugmentation({
+      func: () => method(...newArgs),
+      handler: () => {
+        if (typeof customHandler !== 'function') {
+          return;
+        }
 
-      boundedRunWithAugmentation({
-        func: () => {
-          if (!boundedAllowTraceLogging) {
-            originalConsoleLogMethod.apply(console, ['[+] Suppressing `console.trace` as per TSL Config']);
-            return;
-          }
-
-          originalConsoleTraceMethod.apply(console, args);
-        },
-        handler: () => {
-          if (typeof boundedHandler !== 'function' || !boundedAllowTraceLogging) {
-            return;
-          }
-
-          boundedHandler(...args);
-        },
-      });
-    };
+        customHandler(...args);
+      },
+    });
   }
 
   private _activateGlobalErrorTracing() {

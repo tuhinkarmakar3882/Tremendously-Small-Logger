@@ -1,8 +1,8 @@
-import {TSFeatureFlags, TSLogger, TSLoggingHandlerConfig, TSLogLevelFlags} from '../src';
+import { TSFeatureFlags, TSLogger, TSLoggingHandlerConfig, TSLogLevelFlags } from '../src';
 
 describe('Tremendously Small Logger Tests', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
+    jest.clearAllMocks();
   });
 
   describe('With Global Monkey Patcher', () => {
@@ -137,7 +137,7 @@ describe('Tremendously Small Logger Tests', () => {
 
   describe('Without Monkey Patcher', () => {
     beforeEach(() => {
-      TSLogger.killInstance()
+      TSLogger.killInstance();
     });
 
     const mockedHandlers: TSLoggingHandlerConfig = {
@@ -150,11 +150,12 @@ describe('Tremendously Small Logger Tests', () => {
     };
 
     const logLevelFlags = new TSLogLevelFlags({
-      allowWarningLogging: true,
-      allowErrorLogging: true,
-      allowDebugLogging: true,
       allowDefaultLogging: true,
       allowInfoLogging: true,
+      allowWarningLogging: true,
+      allowDebugLogging: true,
+      allowErrorLogging: true,
+      allowTraceLogging: true,
     });
     const logFeatureFlags = new TSFeatureFlags({
       enableGlobalMonkeyPatching: false,
@@ -179,9 +180,9 @@ describe('Tremendously Small Logger Tests', () => {
       console.debug('Hello, World!');
       console.trace('Hello, World!');
 
-      expect(jest.fn()).toHaveBeenCalledTimes(0);
-      expect(jest.fn()).toHaveBeenCalledTimes(0);
-      expect(jest.fn()).toHaveBeenCalledTimes(0);
+      expect(mockedHandlers.log).toHaveBeenCalledTimes(0);
+      expect(mockedHandlers.info).toHaveBeenCalledTimes(0);
+      expect(mockedHandlers.warn).toHaveBeenCalledTimes(0);
       expect(mockedHandlers.error).toHaveBeenCalledTimes(0);
       expect(mockedHandlers.debug).toHaveBeenCalledTimes(0);
       expect(mockedHandlers.trace).toHaveBeenCalledTimes(0);
@@ -189,22 +190,24 @@ describe('Tremendously Small Logger Tests', () => {
       logger.log('Hello, World!');
       logger.info('Hello, World!');
       logger.warn('Hello, World!');
-      logger.error('Hello, World!');
       logger.debug('Hello, World!');
-      logger.trace('Hello, World!');
 
       expect(mockedHandlers.log).toHaveBeenCalledTimes(1);
       expect(mockedHandlers.info).toHaveBeenCalledTimes(1);
       expect(mockedHandlers.warn).toHaveBeenCalledTimes(1);
-      expect(mockedHandlers.error).toHaveBeenCalledTimes(1);
       expect(mockedHandlers.debug).toHaveBeenCalledTimes(1);
+
+      logger.error('Hello, World!');
+      expect(mockedHandlers.error).toHaveBeenCalledTimes(1);
+
+      logger.trace('Hello, World!');
       expect(mockedHandlers.trace).toHaveBeenCalledTimes(2);
     });
   });
 
   describe('With Partial Monkey Patcher', () => {
     beforeEach(() => {
-      TSLogger.killInstance()
+      TSLogger.killInstance();
     });
 
     const logLevelFlags = new TSLogLevelFlags({
